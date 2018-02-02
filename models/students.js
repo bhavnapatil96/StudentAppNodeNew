@@ -84,6 +84,35 @@ StudentSchema.methods.generateAuthToken=function(){
         return token;
     });
 }
+
+StudentSchema.methods.login=(email,password)=>{
+    let student=this;
+    return new Promise((resole, reject) => {
+        student.findOne({email:email},(err,data)=>{
+            if(data){
+                bcrypt.compare(password,data.password,(err,res)=>{
+                    console.log(res);
+                    if(res==true)
+                    {
+                        return resole(data);
+                    }
+                    else
+                    {
+                        return reject(err);
+                    }
+                })
+            }else
+            {
+                console.log("Email in not Available");
+                return reject(err);
+            }
+
+        }).catch((e)=>{
+            return reject(e);
+        })
+    });
+
+}
 let students=mongoose.model('students',StudentSchema);
 
 module.exports={students};
