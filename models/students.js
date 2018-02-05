@@ -5,14 +5,14 @@ const bcrypt=require('bcryptjs');
 
 var StudentSchema=new mongoose.Schema({
     fullname:{
-        required: true,
+        //required: true,
         type: String,
         minlength: 1,
         trim: true
 
     },
     email:{
-        required: true,
+        //required: true,
         type: String,
         minlength: 1,
         trim: true,
@@ -23,28 +23,28 @@ var StudentSchema=new mongoose.Schema({
         }
     },
     password:{
-        required: true,
+        //required: true,
         type: String,
         minlength: 5
 
     },
     contact:{
-        required: true,
+        //required: true,
         type: Number,
         length: 10
 
     },
     gender:{
-        required: true,
+        //required: true,
         type: String,
         length: 1
     },
     city:{
-        required: true,
+        //required: true,
         type: String
     },
     iagree:{
-        required: true,
+        //required: true,
         type: String
 
     },

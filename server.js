@@ -8,7 +8,7 @@ const Student=require('./models/students').students;
 const bcrypt=require('bcryptjs');
 const passport=require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var app=express();
 app.use(passport.initialize());
 app.use(passport.session());
@@ -106,7 +106,7 @@ app.post('/student/findbyid',(req,res)=>{
     });
 });
 app.post('/student/update',(req,res)=>{
-    let body=_.pick(req.body,['id','fullname','email','password','contact','gender','city']);
+    let body=_.pick(req.body,['id','fullname','email','contact','gender','city']);
     //let id=body.id;
    console.log('request Id : ',req.body.id);
     Student.findByIdAndUpdate(req.body.id,{$set:body}).then((student)=>{
@@ -128,7 +128,7 @@ app.post('/student/login',(req,res)=>{
     Student.findOne({email:email},(err,data)=>{
         if(data){
             bcrypt.compare(password,data.password,(err,d)=>{
-                //console.log(d);
+
                 if(d==true)
                 {
                     sess = req.session;
@@ -162,7 +162,7 @@ passport.deserializeUser((user,done)=>{
     return done(null,user);
 });
 
-passport.use(new LocalStrategy((username, password, done) => {
+passport.use(new LocalStrategy ((username, password, done) => {
         console.log('in passport',username,password);
         Student.findOne({email: username}, (err, user) => {
             if (err) {
@@ -201,10 +201,13 @@ passport.use(new LocalStrategy((username, password, done) => {
 
 app.post('/student/loginp',passport.authenticate('local', {
     successRedirect: '/student/list',
-    failureRedirect: '/login',
+    failureRedirect: '/loginp',
+
 
 }));
+//............................................................
 
+//............................................................
 
 app.listen(8081,()=>{
     console.log('App is running on Port  8081');
